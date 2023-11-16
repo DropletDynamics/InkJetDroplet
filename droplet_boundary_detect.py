@@ -65,10 +65,10 @@ def droplet_boundary(image_path):
 
 
     # Save the output figures
-    cv2.imwrite('enhanced_contrast.jpg', image_contrast)
-    cv2.imwrite('cropped_image.jpg', cropped_image)
-    cv2.imwrite('droplet_boundary.jpg', edges)
-    cv2.imwrite('droplet_with_ellipse.jpg', image_with_ellipse)
+    cv2.imwrite(image_path+'enhanced_contrast.jpg', image_contrast)
+    cv2.imwrite(image_path+'cropped_image.jpg', cropped_image)
+    cv2.imwrite(image_path+'droplet_boundary.jpg', edges)
+    cv2.imwrite(image_path+'droplet_with_ellipse.jpg', image_with_ellipse)
 
     # Display the results
     # cv2.imshow('Original Image', image)
