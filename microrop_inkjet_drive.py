@@ -4,7 +4,8 @@ from PIL import Image
 # Import your previously defined classes
 from inkjet_dispenser import InkjetDispenser
 from camera_controller import CameraController
-from image_processor import ImageProcessor
+# from image_processor import ImageProcessor
+import droplet_boundary_detect as dbd
 
 # Define the serial port and settings
 port = '/dev/ttyUSB0'  # Replace with your serial port
@@ -40,11 +41,14 @@ if __name__ == "__main__":
         dispenser.close()
 
         # Process the captured image to detect the droplet boundary
-        image_processor = ImageProcessor()
-        processed_image = image_processor.detect_droplet_boundary(image_path)
+        # image_processor = ImageProcessor()
+        # processed_image = image_processor.detect_droplet_boundary(image_path)
 
-        # Save the processed image
-        processed_image.save("processed_image.jpg")
+        # # Save the processed image
+        # processed_image.save("processed_image.jpg")
+
+        # Detect the droplet boundary from the captured image
+        dbd.droplet_boundary(image_path)
 
     except Exception as e:
         print(f"Error: {e}")
