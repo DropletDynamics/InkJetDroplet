@@ -6,6 +6,7 @@ from inkjet_dispenser import InkjetDispenser
 from camera_controller import CameraController
 # from image_processor import ImageProcessor
 import droplet_boundary_detect as dbd
+import add_metadata_to_image as mdi
 
 # Define the serial port and settings
 port = '/dev/ttyUSB0'  # Replace with your serial port
@@ -35,6 +36,10 @@ if __name__ == "__main__":
         # Stop the camera stream
         camera_controller.stop_stream()
 
+        # Add metadata to the captured image
+        input_signal_properties = {"V1": 50, "V2": -60, "V3": 10, "w1": 27, "w2": 25, "w3": 26, "d1": 10, "d2": 20}
+        mdi.add_metadata_tags(image_path, input_signal_properties)
+
         # Close the inkjet dispenser
         # dispenser.set_active(1, 0)   # Set the dispenser to inactive state
         dispenser.start_global(0)
@@ -48,7 +53,7 @@ if __name__ == "__main__":
         # processed_image.save("processed_image.jpg")
 
         # Detect the droplet boundary from the captured image
-        dbd.droplet_boundary(image_path)
+        ellipses = dbd.droplet_boundary(image_path)
 
     except Exception as e:
         print(f"Error: {e}")
