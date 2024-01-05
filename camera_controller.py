@@ -21,7 +21,7 @@ class CameraController:
 
         self.camera.stream_on()
 
-    def capture_image(self, save_path="image.jpg"):
+    def capture_image(self):
         if self.camera is None:
             raise Exception("Camera not initialized.")
 
@@ -30,10 +30,18 @@ class CameraController:
 
         if rgb_image is not None:
             numpy_image = rgb_image.get_numpy_array()
-            if numpy_image is not None:
-                image = Image.fromarray(numpy_image, 'RGB')
-                image.show()
-                image.save(save_path)
+            return numpy_image
+            # if numpy_image is not None:
+            #     image = Image.fromarray(numpy_image, 'RGB')
+            #     image.show()
+            #     image.save(save_path)
+        else: return None
+
+    def save_image(self, numpy_image, save_path="image.jpg"):
+        if numpy_image is not None:
+            image = Image.fromarray(numpy_image, 'RGB')
+            # image.show()
+            image.save(save_path)
 
     def stop_stream(self):
         if self.camera is not None:

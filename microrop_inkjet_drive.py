@@ -31,7 +31,8 @@ if __name__ == "__main__":
 
         # Capture an image
         image_path = "captured_image.jpg"
-        camera_controller.capture_image(save_path=image_path)
+        numpy_image = camera_controller.capture_image()
+        camera_controller.save_image(numpy_image=numpy_image, save_path=image_path)
 
         # Stop the camera stream
         camera_controller.stop_stream()
