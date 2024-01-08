@@ -8,8 +8,9 @@ class InkjetDispenser:
 
     def send_command(self, command):
         self.ser.write(command.encode() + b'\r')  # Add carriage return at the end
-        response = self.ser.readline().decode().strip()
-        return response
+        response = self.ser.readline()
+        print(response)
+        return response.decode().strip()
 
     def back_light(self, head, brightness_percent):
         command = f"BackLight({head},{brightness_percent})"
@@ -42,7 +43,7 @@ class InkjetDispenser:
     def start_global(self, n):
         command = f"StartGlobal({n})"
         return self.send_command(command)
-
+    
     # Add more methods for other commands as needed...
 
     def close(self):

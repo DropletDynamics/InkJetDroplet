@@ -15,6 +15,7 @@ baud_rate = 19200
 # data_bits = 8
 # stop_bits = 1
 
+
 if __name__ == "__main__":
     try:
         # Initialize and turn on the inkjet dispenser
