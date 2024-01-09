@@ -15,17 +15,44 @@ baud_rate = 19200
 # data_bits = 8
 # stop_bits = 1
 
+def initial_setup():
+    print("Initialize and turn on the inkjet dispenser")
+    dispenser = InkjetDispenser(port, baud_rate)
+    
+    dispenser.get_hardware_version()
+    dispenser.get_software_version()
+    
+    dispenser.set_active(1, 1)   # Set the dispenser to active state
+    dispenser.start_global(1)
+    dispenser.back_light(1, 0.7)  # Set backlight brightness
+    
+
+    print("Initialize and start the camera stream")
+    camera_controller = CameraController()
+    camera_controller.initialize_camera()
+    camera_controller.start_stream()
+
 
 if __name__ == "__main__":
     try:
-        # Initialize and turn on the inkjet dispenser
+        
+        print("Initialize and turn on the inkjet dispenser")
         dispenser = InkjetDispenser(port, baud_rate)
-        dispenser.back_light(1, 50)  # Set backlight brightness
+    
+        dispenser.get_hardware_version()
+        dispenser.get_software_version()
+    
         dispenser.set_active(1, 1)   # Set the dispenser to active state
+        dispenser.get_pulse_count(1)
+        dispenser.get_pulse_voltage(1,1)
+        dispenser.get_pulse_delay(1,1)
+        dispenser.get_pulse_length(1,1)
         dispenser.start_global(1)
-        dispenser.back_light(1, 50)  # Set backlight brightness
+        dispenser.back_light(1, 0.7)  # Set backlight brightness
+        dispenser.get_strobe_delay(1)
+    
 
-        # Initialize and start the camera stream
+        print("Initialize and start the camera stream")
         camera_controller = CameraController()
         camera_controller.initialize_camera()
         camera_controller.start_stream()
