@@ -43,10 +43,11 @@ if __name__ == "__main__":
         dispenser.get_software_version()
     
         dispenser.set_active(1, 1)   # Set the dispenser to active state
-        dispenser.get_pulse_count(1)
-        dispenser.get_pulse_voltage(1,1)
-        dispenser.get_pulse_delay(1,1)
-        dispenser.get_pulse_length(1,1)
+        n_pulse = dispenser.get_pulse_count(1)
+        for i in range(1,n_pulse+1):
+            dispenser.get_pulse_voltage(1,i)
+            dispenser.get_pulse_delay(1,i)
+            dispenser.get_pulse_length(1,i)
         dispenser.start_global(1)
         dispenser.back_light(1, 0.7)  # Set backlight brightness
         dispenser.get_strobe_delay(1)
@@ -71,8 +72,8 @@ if __name__ == "__main__":
 
         # Close the inkjet dispenser
         # dispenser.set_active(1, 0)   # Set the dispenser to inactive state
-        dispenser.start_global(0)
-        dispenser.close()
+        # dispenser.start_global(0)
+        # dispenser.close()
 
         # Process the captured image to detect the droplet boundary
         # image_processor = ImageProcessor()

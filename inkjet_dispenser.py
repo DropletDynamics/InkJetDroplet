@@ -57,7 +57,7 @@ class InkjetDispenser:
     
     def get_frequency(self, head):
         command = f"GetFrequency({head})"
-        result = float(self.send_command(command).decode())
+        result = float(self.send_command(command).decode().strip())
         print("Getting frequency for head", head, " = ", result)
         return result
     
@@ -68,7 +68,7 @@ class InkjetDispenser:
     
     def get_pulse_delay(self, head, pulse):
         command = f"GetPulseDelay({head},{pulse})"
-        result = float(self.send_command(command).decode())
+        result = float(self.send_command(command).decode().strip()[1:])
         print(f"Getting pulse delay for head {head} pulse {pulse} = ", result)
         return result
     
@@ -79,7 +79,7 @@ class InkjetDispenser:
     
     def get_pulse_length(self, head, pulse):
         command = f"GetPulseLength({head},{pulse})"
-        result = float(self.send_command(command).decode())
+        result = float(self.send_command(command).decode().strip()[1:])
         print(f"Getting pulse length for head {head} pulse {pulse} = ", result)
         return result
     
@@ -90,7 +90,7 @@ class InkjetDispenser:
     
     def get_pulse_voltage(self, head, pulse):
         command = f"GetPulseVoltage({head},{pulse})"
-        result = float(self.send_command(command).decode())
+        result = float(self.send_command(command).decode().strip()[1:])
         print(f"Getting pulse voltage for head {head} pulse {pulse} = ", result)
         return result
     
@@ -101,7 +101,7 @@ class InkjetDispenser:
     
     def get_pulse_count(self, head):
         command = f"GetPulseCount({head})"
-        result = int(self.send_command(command).decode())
+        result = int(self.send_command(command).decode().strip())
         print(f"Getting pulse count for head {head} = ", result)
         return result
     
@@ -122,7 +122,7 @@ class InkjetDispenser:
     
     def get_strobe_delay(self, head):
         command = f"GetStrobe({head})"
-        result = float(self.send_command(command).decode())
+        result = float(self.send_command(command).decode().strip())
         print(f"Getting strobe delay for head {head} = ", result)
         return result
     
@@ -134,7 +134,7 @@ class InkjetDispenser:
     
     def get_software_version(self):
         command = "GetConfig(1,6)"
-        result = float(self.send_command(command).decode())
+        result = (self.send_command(command).decode()).strip()
         print("Identification and software version ", result)
         return result
     
