@@ -14,18 +14,23 @@ class CameraController:
         # Open the first available camera
         strSN = dev_info_list[0].get("sn")
         self.camera = self.device_manager.open_device_by_sn(strSN)
+        int_channel_num = self.camera.get_stream_channel_num()
+        print(int_channel_num)
 
     def start_stream(self):
         if self.camera is None:
             raise Exception("Camera not initialized.")
 
         self.camera.stream_on()
+        print("CameraGain = ",self.camera.Gain.get(), self.camera.Gain.get_range())
+        self.camera.Gain.set(12)
 
     def capture_image(self):
         if self.camera is None:
             raise Exception("Camera not initialized.")
 
         raw_image = self.camera.data_stream[0].get_image()
+        # print(raw_image)
         rgb_image = raw_image.convert("RGB")
 
         if rgb_image is not None:

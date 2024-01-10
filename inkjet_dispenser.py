@@ -20,7 +20,7 @@ class InkjetDispenser:
     def get_busy(self, head):
         command = f"GetBusy({head})"
         result = self.send_command(command)
-        print("Getting busy status for head", head, " = ", (result & 1))
+        print("Getting busy status for head", head, " = ", (result))
         return result
 
     def get_config(self, head, n):
@@ -101,7 +101,11 @@ class InkjetDispenser:
     
     def get_pulse_count(self, head):
         command = f"GetPulseCount({head})"
-        result = int(self.send_command(command).decode().strip())
+        response = self.send_command(command).decode().strip()
+        if len(response)>1:
+            result = int(response[1:])
+        else:
+            result = int(response)
         print(f"Getting pulse count for head {head} = ", result)
         return result
     
