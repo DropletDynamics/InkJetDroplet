@@ -9,7 +9,7 @@ class InkjetDispenser:
     def send_command(self, command):
         self.ser.write(command.encode() + b'\r')  # Add carriage return at the end
         response = self.ser.readline()
-        print(response)
+        # print(response)
         return response#.decode().strip()
 
     def back_light(self, head, brightness_percent):
@@ -74,7 +74,7 @@ class InkjetDispenser:
     
     def set_pulse_delay(self, head, pulse, delay):
         command = f"SetPulseDelay({head},{pulse},{delay})"
-        print(f"Setting pulse delay for head {head} pulse {pulse} to {delay}")
+        # print(f"Setting pulse delay for head {head} pulse {pulse} to {delay}")
         return self.send_command(command)
     
     def get_pulse_length(self, head, pulse):
@@ -85,7 +85,7 @@ class InkjetDispenser:
     
     def set_pulse_length(self, head, pulse, length):
         command = f"SetPulseLength({head},{pulse},{length})"
-        print(f"Setting pulse length for head {head} pulse {pulse} to {length}")
+        # print(f"Setting pulse length for head {head} pulse {pulse} to {length}")
         return self.send_command(command)
     
     def get_pulse_voltage(self, head, pulse):
@@ -96,7 +96,7 @@ class InkjetDispenser:
     
     def set_pulse_voltage(self, head, pulse, voltage):
         command = f"SetPulseVoltage({head},{pulse},{voltage})"
-        print(f"Setting pulse voltage for head {head} pulse {pulse} to {voltage}")
+        # print(f"Setting pulse voltage for head {head} pulse {pulse} to {voltage}")
         return self.send_command(command)
     
     def get_pulse_count(self, head):

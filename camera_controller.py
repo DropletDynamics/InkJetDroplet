@@ -15,7 +15,10 @@ class CameraController:
         strSN = dev_info_list[0].get("sn")
         self.camera = self.device_manager.open_device_by_sn(strSN)
         int_channel_num = self.camera.get_stream_channel_num()
-        print(int_channel_num)
+        print("Camera chanells = ",int_channel_num)
+        self.width = self.camera.Width.get()
+        self.height = self.camera.Height.get()
+        print("Image size = ", self.width, self.height)
 
     def start_stream(self):
         if self.camera is None:
