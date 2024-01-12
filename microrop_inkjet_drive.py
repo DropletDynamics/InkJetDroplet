@@ -1,7 +1,6 @@
 import time
 from PIL import Image
 
-# Import your previously defined classes
 from inkjet_dispenser import InkjetDispenser
 from camera_controller import CameraController
 # from image_processor import ImageProcessor

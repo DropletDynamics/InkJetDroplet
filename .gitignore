@@ -1,2 +1,9 @@
 # output images
 *.jpg
+capture*/
+
+# databases
+*.hdf5
+*.pkl
+
+__pycache__/
