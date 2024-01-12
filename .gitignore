@@ -1,6 +1,10 @@
 # output images
 *.jpg
 capture*/
+*.tar.gz
+*.zip
+*.7z
+
 
 # databases
 *.hdf5
