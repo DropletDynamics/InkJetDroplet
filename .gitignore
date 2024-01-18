@@ -10,4 +10,8 @@ capture*/
 *.hdf5
 *.pkl
 
+# python
 __pycache__/
+
+# test files
+test*
