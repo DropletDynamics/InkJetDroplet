@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import operator # for sorting and comparing
 
 def enhance_contrast(image):
     # Convert the image to grayscale
@@ -346,10 +347,15 @@ def draw_contours_with_different_colors(img, contours):
     return img
 
 def ellipses_analysis(ellipses):
+    
     if ellipses:
+        # Define a lambda function that returns the area of an ellipse
+        area = lambda e: e[1][0] * e[1][1]
+        # Sort the list of ellipses by area in descending order
+        ellipses_sorted = sorted(ellipses, key=area, reverse=True)        
         n = len(ellipses)
         properties = []
-        for ellipse in ellipses:        
+        for ellipse in ellipses_sorted:        
             major_axis, minor_axis = ellipse[1]
             angle = ellipse[2]
             properties.append((major_axis, minor_axis, angle))        
