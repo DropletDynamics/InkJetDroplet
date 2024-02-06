@@ -10,7 +10,7 @@ import sys
 import csv
 
 # Define the folder path and the file pattern
-folder = "captures_main"
+folder = "captures"#_main
 pattern = "images_V1-*_V2-*_V3-*_w1-*_w2-*_w3-*_d1-*_d2-*.jpg"
 
 # Get the list of image files
