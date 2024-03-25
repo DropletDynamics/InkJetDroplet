@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 import operator # for sorting and comparing
+import pyefd
 
 def enhance_contrast(image):
     # Convert the image to grayscale
@@ -30,6 +32,15 @@ def process_image(img):
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5,5))
     dilate = cv2.morphologyEx(thresh, cv2.MORPH_DILATE, kernel)
     
+    # Downsize image (by factor 4) to speed up morphological operations
+    # gray = cv2.resize(gray, dsize=(0, 0), fx=0.25, fy=0.25)
+
+    # Morphological Closing: Get rid of the hole
+    # gray = cv2.morphologyEx(gray, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5)))
+
+    # Morphological opening: Get rid of the stuff at the top of the circle
+    # dilate = cv2.morphologyEx(gray, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (121, 121)))
+
 
     # get absolute difference between dilate and thresh
     # diff = cv2.absdiff(dilate, thresh)
@@ -70,7 +81,7 @@ def measure_nozzle_diameter(edges):
             # Print the coordinates of the rectangle
             print(f"Rectangle found at {box.flatten().tolist()}")
             
-        cv2.imwrite('droplet_boundary.jpg', image)
+        # cv2.imwrite('droplet_boundary.jpg', image)
 
 def contour_intersect(cnt_ref,cnt_query, edges_only = True):
     
@@ -260,7 +271,7 @@ def contour_child_finder(contour_index, hierarchy):
     return number_of_child, child_indexes #hierarchy[0, index, 2] != -1
 
 
-def measure_droplet_properties(edges, image_path=""):
+def measure_droplet_properties(edges, image_path="", save_contour=False):
     contours, hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     # print(hierarchy)
 
@@ -346,8 +357,11 @@ def draw_contours_with_different_colors(img, contours):
     # Return the image with the contours
     return img
 
-def ellipses_analysis(ellipses):
+def ellipses_analysis(ellipses, save_ellipse=False, filename_vars=None):
     
+    ellipses_sorted = ellipses
+    n = 0
+    properties = [(0,0,0,0,0)]
     if ellipses:
         # Define a lambda function that returns the area of an ellipse
         area = lambda e: e[1][0] * e[1][1]
@@ -355,16 +369,124 @@ def ellipses_analysis(ellipses):
         ellipses_sorted = sorted(ellipses, key=area, reverse=True)        
         n = len(ellipses)
         properties = []
-        for ellipse in ellipses_sorted:        
+        for ellipse in ellipses_sorted:
+            center_x, center_y = ellipse[0]
             major_axis, minor_axis = ellipse[1]
             angle = ellipse[2]
-            properties.append((major_axis, minor_axis, angle))        
-    else:
-        n = 0
-        properties = [(0,0,0)]
-    return n, properties
+            properties.append((center_x, center_y, major_axis, minor_axis, angle))
+        return n, properties, ellipses_sorted
+    # else:
+    #     n = 0
+    #     properties = [(0,0,0)]
+    return n, properties, ellipses_sorted
 
-def droplet_boundary(image_path):
+def calculate_pixel_sum(image):
+    s1 = np.sum(image, axis=0)
+    s2 = np.sum(image, axis=1)
+    return s1, s2
+
+def calculate_pixel_grad(s1, s2):
+    grad_x = np.gradient(s1)
+    grad_y = np.gradient(s2)
+    return grad_x, grad_y    
+
+def contour_finder(image_path):
+    # Load the image
+    image = cv2.imread(image_path)
+    # Crop and remove nozzle
+    x_offset = 220#580
+    y_offset = 0#485
+    cropped_image = crop_and_remove_nozzle(image.copy(), x_offset, y_offset)
+
+    # Enhance contrast
+    image_contrast = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
+    
+    # threshold
+    thresh = cv2.threshold(image_contrast, 50, 255, cv2.THRESH_BINARY)[1]
+    
+    # find contours
+    cntrs, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    cntrs_sorted = sorted(cntrs, key=cv2.contourArea, reverse=True)
+    contours = []
+    contours_area = []
+    contour_centroids = []
+    for cont in cntrs_sorted:
+        if cv2.contourArea(cont) < 30000:
+            (x,y) = get_centroid(cont)
+            if y > 100 and y < 1400:# or x < 100 or x > 1000
+                contours.append(cont)
+                contours_area.append(cv2.contourArea(cont))
+                contour_centroids.append((x,y))
+    
+    # image_with_contours = cropped_image.copy()
+    # draw_contours_with_different_colors(image_with_contours, contours)
+    # cv2.imwrite("process"+"/"+image_path+'_contours.jpg', image_with_contours)
+    
+    return contours, contours_area, contour_centroids, hierarchy
+
+def contour_fourier_features(contour, order=10):
+    coeffs = pyefd.elliptic_fourier_descriptors(contour, order=order)
+    a0, c0 = pyefd.calculate_dc_coefficients(contour)
+    return coeffs, a0, c0
+
+def gradient_labeling(image_path):
+    # Load the image
+    image = cv2.imread(image_path)
+    # Crop and remove nozzle
+    x_offset = 220#580
+    y_offset = 0#485
+    cropped_image = crop_and_remove_nozzle(image.copy(), x_offset, y_offset)
+    
+    # Enhance contrast
+    image_contrast = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)#enhance_contrast(cropped_image)#cv2.GaussianBlur(image, (5, 5), 0)#
+    
+    # Detect droplet boundary
+    # edges = detect_droplet_boundary(image_contrast)
+    # edges = process_image(image_contrast)
+    
+    # threshold
+    thresh = cv2.threshold(image_contrast, 50, 255, cv2.THRESH_BINARY)[1]
+    
+    fig1 = plt.figure()
+    plt.imshow(thresh, cmap='gray')
+    fig1.savefig(image_path+'edges.png', dpi=300)
+    
+    sx, sy = calculate_pixel_sum(thresh)
+    grad_x, grad_y = calculate_pixel_grad(sx, sy)
+    
+    sx = sx/np.max(sx)
+    sy = sy/np.max(sy)
+    grad_x = grad_x/np.max(grad_x)
+    grad_y = grad_y/np.max(grad_y)
+        
+    # Create a figure with 3 subplots
+    fig, axs = plt.subplots(nrows=1, ncols=3, figsize=(12, 4))
+
+    # Plot the image on the first subplot
+    axs[0].imshow(cropped_image, cmap='gray')
+    axs[0].set_title('Image')
+    
+    axs[1].plot(sx, label='Sum')
+    axs[1].plot(grad_x, label='Gradient')
+    axs[1].set_title('Sum and gradient along x axis')
+    axs[1].legend()
+    
+    axs[2].plot(sy, label='Sum')
+    axs[2].plot(grad_y, label='Gradient')
+    axs[2].set_title('Sum and gradient along y axis')
+    axs[2].legend()
+    
+    # Adjust the spacing between subplots
+    fig.tight_layout()
+    
+    fig.savefig(image_path+'_morphology.jpg', dpi=300)
+    # Show the figure
+    # plt.show()
+
+    return grad_x, grad_y, sx, sy
+    
+
+def droplet_boundary(image_path, save_ellipse=False, save_contour=False):
 
     # Load the image
     image = cv2.imread(image_path)
@@ -397,16 +519,19 @@ def droplet_boundary(image_path):
 
     # Measure droplet properties  largest_contour, area, 
     contours, hierarchy, ellipses = measure_droplet_properties(edges, image_path)
-
+    
+    ellipses_with_offset = []
     # Draw fitted ellipse on the original image
-    # image_with_ellipse = cropped_image.copy()
-    # for ellipse in ellipses:
-        # _ellipse = list(ellipse)
-        # _centre = list(_ellipse[0])
-        # _centre[0] = _centre[0] + x_offset # add x offset to draw ellipse in original image coordinates
-        # _centre[1] = _centre[1] + y_offset # add x offset to draw ellipse in original image coordinates
-        # _ellipse[0] = tuple(_centre) # update ellipse centre
-        # ellipse = tuple(_ellipse)
+    if ellipses:
+        # image_with_ellipse = cropped_image.copy()        
+        for ellipse in ellipses:
+            _ellipse = list(ellipse)
+            _centre = list(_ellipse[0])
+            _centre[0] = _centre[0] + x_offset # add x offset to draw ellipse in original image coordinates
+            _centre[1] = _centre[1] + y_offset # add x offset to draw ellipse in original image coordinates
+            _ellipse[0] = tuple(_centre) # update ellipse centre
+            ellipse = tuple(_ellipse)
+            ellipses_with_offset.append(ellipse)
         # cv2.ellipse(image_with_ellipse, ellipse, (0, 255, 0), 2)
         # print(f'Major Axis: {ellipse[1][1]}, Minor Axis: {ellipse[1][0]}, Angle: {ellipse[2]}')
 
@@ -445,6 +570,6 @@ def droplet_boundary(image_path):
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
     
-    return ellipses
+    return ellipses_with_offset
 
 # droplet_boundary('sattlite.jpg')#Captura0.PNG

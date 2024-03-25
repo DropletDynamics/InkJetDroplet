@@ -27,6 +27,7 @@ if __name__ == "__main__":
 
         dispenser.set_active(1, 1)   # Set the dispenser to active state
         dispenser.start_global(1)
+        # dispenser.set_active(1, 0)   # Set the dispenser to active state
         # dispenser.get_busy(1)
 
         # dispenser.start_global(0)

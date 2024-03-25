@@ -1,6 +1,7 @@
 # Import the modules
 import cv2
 import glob
+import time
 import re
 import h5py # for HDF5 format
 import droplet_boundary_detect
@@ -10,7 +11,7 @@ import sys
 import csv
 
 # Define the folder path and the file pattern
-folder = "captures"#_main
+folder = "captures"#"selected"#_main
 pattern = "images_V1-*_V2-*_V3-*_w1-*_w2-*_w3-*_d1-*_d2-*.jpg"
 
 # Get the list of image files
@@ -26,10 +27,11 @@ print(f"Found {len(files)} image files matching the pattern")
     # dset = f.create_dataset("table", shape=(0,), dtype=vlen_float)
 with open('results.csv', 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(["V1", "V2", "V3", "w1", "w2", "w3", "d1", "d2", "n", "a", "b", "theta"])
+    writer.writerow(["V1", "V2", "V3", "w1", "w2", "w3", "d1", "d2", "n", "c_x", "c_y", "a", "b", "theta"])
     # Loop through the image files
+    start_time = time.time()
     for i, file in enumerate(files):
-        sys.stdout.write(f"\rProcessing image {i+1}/{len(files)}")
+        sys.stdout.write(f"\rProcessing image {i+1}/{len(files)}, time elapsed: {time.time() - start_time}")
             
         # Extract the input variables from the file name
         # vars = re.findall("-?\d+", file)
@@ -55,10 +57,17 @@ with open('results.csv', 'w', newline='') as csvfile:
         # img = cv2.imread(file)
         # Detect the ellipses in the image
         ellipses = droplet_boundary_detect.droplet_boundary(file)
-        n, properties = droplet_boundary_detect.ellipses_analysis(ellipses)
+        n, properties, ellipses_sorted = droplet_boundary_detect.ellipses_analysis(ellipses)
+        # if n > 0:
+        # for ellipse in ellipses:
+        #     image = cv2.imread(file)
+        #     cv2.ellipse(image, ellipse, (0, 255, 0), 2)
+        #     file_path = folder+f'/processed/images_V1-{V1}_V2-{V2}_V3-{V3}_w1-{w1}_w2-{w2}_w3-{w3}_d1-{d1}_d2-{d2}_ellipses.jpg'
+        #     # print(f'Saving processed image to {file_path}')
+        #     cv2.imwrite(file_path, image)
         # print(properties[0][0])
         
-        writer.writerow([V1, V2, V3, w1, w2, w3, d1, d2,n,properties[0][0],properties[0][1],properties[0][2]])
+        writer.writerow([V1, V2, V3, w1, w2, w3, d1, d2,n,properties[0][0],properties[0][1],properties[0][2],properties[0][3],properties[0][4]])
         # Convert the ellipses to a NumPy array
         # ellipses = np.array(ellipses)
         # properties = np.array(properties)

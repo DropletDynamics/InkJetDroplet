@@ -67,7 +67,7 @@ if __name__ == "__main__":
             dispenser.get_pulse_delay(1,i)
             dispenser.get_pulse_length(1,i)
         dispenser.back_light(1, 30)  # Set backlight brightness
-        # dispenser.get_strobe_delay(1)
+        dispenser.set_strobe_delay(1,150)
 
         dispenser.set_pulse_voltage(1,1,-95.0)
         dispenser.set_pulse_voltage(1,2,12.0)
@@ -95,7 +95,7 @@ if __name__ == "__main__":
         width = camera_controller.width
         height = camera_controller.height
 
-        hdf_file = HDF5_io.HDF5ImageSaver('numpy_images.hdf5')
+        # hdf_file = HDF5_io.HDF5ImageSaver('numpy_images.hdf5')
 
         # Define the initial values of the loop variables
         V1_init = -98
@@ -117,12 +117,12 @@ if __name__ == "__main__":
         # Use a try-except-finally block to handle interruptions
         try:
             # Loop through the parameters
-            for V1 in range(V1,-70,4):
+            for V1 in range(V1,-60,4):
                 dispenser.set_pulse_voltage(1,1,V1)
                 for V2 in range(V2,15):
                     dispenser.set_pulse_voltage(1,2,V2)
                     for V3 in range(V3,-35,-5):
-                        group = hdf_file.create_group(f"images_V1-{V1}_V2-{V2}_V3-{V3}")
+                        # group = hdf_file.create_group(f"images_V1-{V1}_V2-{V2}_V3-{V3}")
                         dispenser.set_pulse_voltage(1,3,V3)
                         # if (V1==-98 and V2==12 and V3==0):
                         #     w1_min = 23

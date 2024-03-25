@@ -1,17 +1,24 @@
 # output images
 *.jpg
+*.mkv
+*.avi
 capture*/
+selected*/
+process*/
 *.tar.gz
 *.zip
+*.zip.*
 *.7z
 
 
 # databases
 *.hdf5
 *.pkl
+*.csv
 
 # python
 __pycache__/
+.venv/
 
 # test files
 test*

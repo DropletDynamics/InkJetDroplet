@@ -5,7 +5,7 @@ def create_database(file_name):
     # Create a file object that represents the HDF5 file
     file = h5py.File(file_name, 'w')
     # Create a group object that represents the input parameters group
-    group = file.create_group('input_parameters')
+    # group = file.create_group('input_parameters')
 
 def create_and_store_data(file_name, input_parameters, output_parameters):
     # Create a file object that represents the HDF5 file

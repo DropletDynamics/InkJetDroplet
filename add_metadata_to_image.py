@@ -6,10 +6,10 @@ def add_metadata_tags(image_file, input_signal_properties):
     
     # Convert the input signal properties to a string
     input_signal_string = ", ".join([f"{key}={value}" for key, value in input_signal_properties.items()])
-    print(input_signal_string)
+    # print(input_signal_string)
     # Encode the string in UTF-16
     input_signal_bytes = input_signal_string.encode("utf-16")
-    print(input_signal_bytes.decode("utf-16"))
+    # print(input_signal_bytes.decode("utf-16"))
     
     # Store the input signal properties as XPKeywords tag
     exif_data["0th"][piexif.ImageIFD.XPKeywords] = input_signal_bytes

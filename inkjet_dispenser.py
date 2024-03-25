@@ -121,12 +121,12 @@ class InkjetDispenser:
     
     def set_strobe_delay(self, head, delay):
         command = f"SetStrobe({head},{delay})"
-        print(f"Setting strobe delay for head {head} to {delay}")
+        # print(f"Setting strobe delay for head {head} to {delay}")
         return self.send_command(command)
     
     def get_strobe_delay(self, head):
         command = f"GetStrobe({head})"
-        result = float(self.send_command(command).decode().strip())
+        result = float(self.send_command(command).decode().strip()[1:])
         print(f"Getting strobe delay for head {head} = ", result)
         return result
     
