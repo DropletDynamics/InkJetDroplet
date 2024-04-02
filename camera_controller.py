@@ -1,5 +1,7 @@
 import gxipy as gx
 from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw 
 
 class CameraController:
     def __init__(self):
@@ -45,10 +47,16 @@ class CameraController:
             #     image.save(save_path)
         else: return None
 
-    def save_image(self, numpy_image, save_path="image.jpg"):
+    def save_image(self, numpy_image, save_path="image.jpg", add_timestamp=False, timestamp=''):
         if numpy_image is not None:
             image = Image.fromarray(numpy_image, 'RGB')
             # image.show()
+            if add_timestamp:
+                draw = ImageDraw.Draw(image)
+                # font = ImageFont.truetype(<font-file>, <font-size>)
+                font = ImageFont.truetype("sans-serif.ttf", 16)
+                # draw.text((x, y),"Sample Text",(r,g,b))
+                draw.text((10, 10),timestamp,(255,255,255),font=font)
             image.save(save_path)
 
     def stop_stream(self):
