@@ -1,28 +1,46 @@
-BSD 3-Clause License
+European Union Public License (EUPL), Version 1.2 (with Additional Terms)
 
-Copyright (c) 2023, ARHashemi
+This work is licensed under the European Union Public License (EUPL) Version 1.2, with the following additional terms and restrictions. Unless explicitly mentioned otherwise, all terms of the EUPL Version 1.2 apply.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+## Additional Terms and Restrictions
 
-1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
+### 1. Explicit Citation Requirements
+1.1. Any use of the software, including modifications and derived works, must explicitly cite the original software repository and its authors as specified in the "How to Cite" section of the documentation (README.md).  
+1.2. In the event of publication or redistribution, citations must include references to any related academic papers specified by the original authors in the "How to Cite" section of the documentation  (README.md).
 
-2. Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
+### 2. Commercial Use
+2.1 The Licensed Work may be used for commercial purposes, provided that:
+   - The user provides clear and visible attribution in their documentation, products, publications, or other outputs, stating that the Licensed Work was used and citing the repository, authors, and any relevant papers or sources specified in the "How to Cite" section of the documentation (README.md).
+   - The user adheres to all other terms of this license, including prohibitions on oppressive or non-humanitarian uses as specified in Sections 3 and 4. 
 
-3. Neither the name of the copyright holder nor the names of its
-   contributors may be used to endorse or promote products derived from
-   this software without specific prior written permission.
+### 3. Prohibition of Military and Non-Peaceful Use
+3.1. This software, including any modifications and derivatives, must not be used for military purposes, the development of weaponry, or any activity intended to harm or intimidate individuals or groups. 
+3.2. Use of this software in projects, activities, or organizations that conflict with principles of peace and disarmament is strictly prohibited.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+### 4. Prohibition of Human Rights Violations
+4.1. This software must not be used in any activity that violates the United Nations Universal Declaration of Human Rights (UDHR).  
+4.2. Prohibited activities include but are not limited to:
+   - Surveillance or enforcement of laws, policies, or practices that conflict with the principles of the United Nations Universal Declaration of Human Rights (UDHR).
+   - Monitoring or identification of individuals for the purpose of suppressing peaceful protest, dissent, or other expressions of fundamental human rights as defined by the UDHR.
+   - Development of technologies or systems that facilitate oppression, discrimination, or abuse of human rights, regardless of whether such actions are sanctioned under local or national laws.
+
+### 5. Transparency in Modifications
+5.1. If this software is modified or forked, all modified parts must be clearly identified in the documentation or accompanying materials.  
+5.2. The original portions of the software must retain this license, and all derivative works must preserve the additional terms specified herein.
+
+### 6. Limitation of Liability
+6.1. The authors of this software shall not be held liable for any violations of these additional terms committed by users of the software.
+
+---
+
+## Full Text of the EUPL Version 1.2
+https://interoperable-europe.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+
+---
+
+## Enforcement and Violations
+Violations of these additional terms may result in legal action. For commercial licensing inquiries or questions regarding permitted use, contact the authors at: arezahashemi@gmail.com
+
+
+Author: Alireza Hashemi
+Contact: arezahashemi@gmail.com
